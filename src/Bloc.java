@@ -1,3 +1,4 @@
+import static com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener;
 import java.awt.*;
 import java.awt.event.*;
 
@@ -16,7 +17,26 @@ public class Bloc implements ActionListener, ItemListener {
   private MenuItem mi3;
   private MenuItem mi4;
   private MenuItem mi6;
+  
+  private MenuItem m21;
+  private MenuItem m22;
+  private MenuItem m23;
+  private MenuItem m24;
+  private MenuItem m25;
+  private MenuItem m26;
+
+  private MenuItem m31;
+  
   private CheckboxMenuItem mi5;
+  private TextArea ta;
+
+    public Bloc() {
+            addWindowListener(new WindowAdapter() {
+        public void windowClosing(WindowEvent e) {
+            System.exit(0);
+        }
+    });
+    }
 
   public void go() {
     f = new Frame("Bloc de Notas z.1");
@@ -40,16 +60,46 @@ public class Bloc implements ActionListener, ItemListener {
     mi4.addActionListener(this);
     mi6.addActionListener(this);
     
+    m21 = new MenuItem("Cortar");
+    m22 = new MenuItem("Copiar");
+    m23 = new MenuItem("Pegar");
+    m24 = new MenuItem("Eliminar");
+    m25 = new MenuItem("Seleccionar todo");
+    m26 = new MenuItem("Fecha y hora");
+    m21.addActionListener(this);
+    m22.addActionListener(this);
+    m23.addActionListener(this);
+    m24.addActionListener(this);
+    m25.addActionListener(this);
+    m26.addActionListener(this);
+    
+    m31 = new MenuItem("Acerca de");
+    m31.addActionListener(this);
+    
     m1.add(mi1);
     m1.add(mi2);
     m1.add(mi3);
     m1.add(mi4);
     m1.addSeparator();
     m1.add(mi6);
+    
+    m2.add(m21);
+    m2.add(m22);
+    m2.add(m23);
+    m2.add(m24);
+    m2.addSeparator();
+    m2.add(m25);
+    m2.add(m26);
+    
+    m3.add(m31);
 
     mi5 = new CheckboxMenuItem("Persistent");
     mi5.addItemListener(this);
     m1.add(mi5);
+    
+    ta = new TextArea();
+    f.add(ta, BorderLayout.CENTER);
+    f.pack();
 
     f.setSize(500,500);
     f.setVisible(true);
@@ -58,9 +108,35 @@ public class Bloc implements ActionListener, ItemListener {
   public void actionPerformed( ActionEvent ae) {
     System.out.println("Opcion \"" + 
         ae.getActionCommand() + "\" elegida.");
-
-    if (ae.getActionCommand().equals("Salir")) {
-      System.exit(0);
+    
+    switch(ae.getActionCommand()){
+        case "Nuevo":
+            Instrucciones.nuevo(ta);
+            break;
+        case "Abrir":
+            Instrucciones.abrir(ta);
+            break;
+        case "Guardar":
+            break;
+        case "Guardad como":
+            break;
+        case "Salir":
+            Instrucciones.salir();
+            break;
+        case "Cortar":
+            break;
+        case "Copiar":
+            break;
+        case "Pegar":
+            break;
+        case "Eliminar":
+            break;
+        case "Seleccionar todo":
+            break;
+        case "Fecha y hora":
+            break;
+        case "Acerca de":
+            break;
     }
   }
 
