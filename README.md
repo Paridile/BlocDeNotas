@@ -39,7 +39,7 @@ _Me avisan cuando quieran fusionarla con el master_
 
 ---
 
-#Estructura 🔧
+# Estructura  🔧
 
 _Vamos a trabajar con 3 clases inicialmente_
 
