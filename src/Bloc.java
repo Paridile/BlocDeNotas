@@ -134,6 +134,7 @@ public class Bloc implements ActionListener, ItemListener {
         case "Seleccionar todo":
             break;
         case "Fecha y hora":
+            Instrucciones.fechaYHora(ta);
             break;
         case "Acerca de":
             break;

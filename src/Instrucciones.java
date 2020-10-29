@@ -2,6 +2,8 @@
 import java.awt.TextArea;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 import javax.swing.JFileChooser;
 
@@ -54,5 +56,11 @@ public class Instrucciones {
     
     public static void salir(){
         System.exit(0);
+    }
+    
+    public static void fechaYHora(TextArea ta){
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
+        LocalDateTime now = LocalDateTime.now();  
+        ta.append(dtf.format(now) + " ");
     }
 }
