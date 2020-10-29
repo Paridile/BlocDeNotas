@@ -56,7 +56,10 @@ _En la parte inferior de esta clase se encuentra un _ ```switch(ae.getActionComm
 # Integrantes 😀
 
 **Jímenez Zempoalteca Uriel**
+
 **Sanchez Cortes Aaron Israel**
+
 **Paez Villafuerte Eithel Agustin** 🏳️‍🌈
+
 **Ríos Díaz de León José Pablo**
 
