@@ -103,6 +103,11 @@ public class Bloc implements ActionListener, ItemListener {
 
     f.setSize(500,500);
     f.setVisible(true);
+    f.addWindowListener(new WindowAdapter(){
+    public void windowClosing(WindowEvent we){
+    System.exit(0);
+    }
+    });
   }
 
   public void actionPerformed( ActionEvent ae) {
