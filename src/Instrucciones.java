@@ -1,6 +1,9 @@
 
 import java.awt.Frame;
 import java.awt.TextArea;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -99,5 +102,14 @@ public class Instrucciones {
     
     public static void seleccionarTodo(TextArea ta) {
         ta.selectAll();
+    }
+    
+    public static void copiar (TextArea ta) {
+        String seleccionado = ta.getSelectedText();
+        if(seleccionado != null){
+            StringSelection stringSelection = new StringSelection(seleccionado);
+            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+            clipboard.setContents(stringSelection, null);
+        }
     }
 }
