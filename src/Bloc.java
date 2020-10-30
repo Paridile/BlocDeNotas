@@ -17,7 +17,6 @@ public class Bloc implements ActionListener, ItemListener {
   private MenuItem mi3;
   private MenuItem mi4;
   private MenuItem mi6;
-  private MenuItem m17;
   
   private MenuItem m21;
   private MenuItem m22;
@@ -52,7 +51,6 @@ public class Bloc implements ActionListener, ItemListener {
     f.setMenuBar(mb);
 
     mi1 = new MenuItem("Nuevo");
-    m17 = new MenuItem("Ventana nueva");
     mi2 = new MenuItem("Abrir");
     mi3 = new MenuItem("Guardar");
     mi4 = new MenuItem("Guardar como...");
@@ -62,7 +60,6 @@ public class Bloc implements ActionListener, ItemListener {
     mi3.addActionListener(this);
     mi4.addActionListener(this);
     mi6.addActionListener(this);
-    m17.addActionListener(this);
     
     m21 = new MenuItem("Cortar");
     m22 = new MenuItem("Copiar");
@@ -81,7 +78,6 @@ public class Bloc implements ActionListener, ItemListener {
     m31.addActionListener(this);
     
     m1.add(mi1);
-    m1.add(m17);
     m1.add(mi2);
     m1.add(mi3);
     m1.add(mi4);
@@ -116,9 +112,6 @@ public class Bloc implements ActionListener, ItemListener {
     switch(ae.getActionCommand()){
         case "Nuevo":
             Instrucciones.nuevo(ta);
-            break;
-        case "Ventana nueva":
-            Instrucciones.nuevaVentana();
             break;
         case "Abrir":
             Instrucciones.abrir(f,ta);

@@ -97,11 +97,6 @@ public class Instrucciones {
         }
     }
     
-    public static void nuevaVentana(){
-         Bloc bloc = new Bloc();
-         bloc.go();
-    }
-    
     public static void seleccionarTodo(TextArea ta) {
         ta.selectAll();
     }
