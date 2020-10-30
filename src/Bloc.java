@@ -137,6 +137,7 @@ public class Bloc implements ActionListener, ItemListener {
             Instrucciones.copiar(ta);
             break;
         case "Pegar":
+            Instrucciones.pegar(ta);
             break;
         case "Eliminar":
             break;

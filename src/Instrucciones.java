@@ -3,7 +3,9 @@ import java.awt.Frame;
 import java.awt.TextArea;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -111,5 +113,14 @@ public class Instrucciones {
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
             clipboard.setContents(stringSelection, null);
         }
+    }
+    
+    public static void pegar(TextArea ta) throws UnsupportedFlavorException, IOException {
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        if(clipboard != null){
+            clipboard.getContents(ta);
+            String textopegado = (String) clipboard.getData(DataFlavor.stringFlavor);
+            ta.append(textopegado);
+        } 
     }
 }
