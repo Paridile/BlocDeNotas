@@ -96,4 +96,8 @@ public class Instrucciones {
          Bloc bloc = new Bloc();
          bloc.go();
     }
+    
+    public static void seleccionarTodo(TextArea ta) {
+        ta.selectAll();
+    }
 }
