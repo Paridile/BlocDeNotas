@@ -1,11 +1,15 @@
 
-import java.awt.TextArea;
+import java.awt.*;
+import java.awt.event.*;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 import javax.swing.JFileChooser;
+import javax.swing.*;
 
 /*
  * BLOC DE NOTAS
@@ -22,6 +26,7 @@ import javax.swing.JFileChooser;
  *
  * @author Uriel
  */
+
 public class Instrucciones {
     public static void nuevo(TextArea ta){
         ta.setText(" ");
@@ -29,7 +34,7 @@ public class Instrucciones {
     
     public static void abrir(TextArea ta){
         String archivo="";
-       Scanner entrada = null;
+        Scanner entrada = null;
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.showOpenDialog(fileChooser);
         try {
@@ -52,6 +57,33 @@ public class Instrucciones {
                 entrada.close();
             }
         }
+    }
+    
+    //fileChooser.showSaveDialog(fileChooser);
+    
+    public static void guardarComo(TextArea ta) {
+       String nombre="";
+       JFileChooser fileChooser = new JFileChooser();
+       fileChooser.showSaveDialog(fileChooser);
+       nombre = fileChooser.getSelectedFile().getAbsolutePath();
+       File guardado = new File(nombre);
+       FileWriter escritor = null;
+       try{
+           escritor = new FileWriter(guardado);
+           escritor.write(ta.getText());
+       }
+       catch(FileNotFoundException e){
+           System.out.println(e.getMessage());
+       }
+       catch(NullPointerException e){
+            System.out.println("No se ha seleccionado ningún fichero");
+       }
+       catch(Exception e){
+           System.out.println(e.getMessage());
+       }
+       finally{
+           
+       }
     }
     
     public static void salir(){

@@ -124,6 +124,7 @@ public class Bloc implements ActionListener, ItemListener {
         case "Guardar":
             break;
         case "Guardad como":
+            Instrucciones.guardarComo(ta);
             break;
         case "Salir":
             Instrucciones.salir();
