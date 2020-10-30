@@ -115,12 +115,17 @@ public class Instrucciones {
         }
     }
     
-    public static void pegar(TextArea ta) throws UnsupportedFlavorException, IOException {
+    public static void pegar(TextArea ta)  {
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         if(clipboard != null){
             clipboard.getContents(ta);
-            String textopegado = (String) clipboard.getData(DataFlavor.stringFlavor);
-            ta.append(textopegado);
+            String textopegado;
+            try {
+                textopegado = (String) clipboard.getData(DataFlavor.stringFlavor);
+                ta.append(textopegado);
+            } catch (UnsupportedFlavorException | IOException ex) {
+                Logger.getLogger(Instrucciones.class.getName()).log(Level.SEVERE, null, ex);
+            } 
         } 
     }
 }
