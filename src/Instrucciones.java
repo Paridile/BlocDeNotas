@@ -1,6 +1,5 @@
 
 import java.awt.Frame;
-import java.awt.TextArea;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
@@ -18,6 +17,7 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import javax.swing.JTextArea;
 
 /*
  * BLOC DE NOTAS
@@ -31,11 +31,11 @@ import javax.swing.JFileChooser;
  */
 
 public class Instrucciones {
-    public static void nuevo(TextArea ta){
+    public static void nuevo(JTextArea ta){
         ta.setText(" ");
     }
     
-    public static void abrir(Frame fr,TextArea ta){
+    public static void abrir(Frame fr,JTextArea ta){
         Scanner entrada = null;
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.showOpenDialog(fileChooser);
@@ -67,13 +67,13 @@ public class Instrucciones {
         System.exit(0);
     }
     
-    public static void fechaYHora(TextArea ta){
+    public static void fechaYHora(JTextArea ta){
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
         LocalDateTime now = LocalDateTime.now();  
         ta.append(dtf.format(now) + " ");
     }
     
-    public static void guardar(TextArea ta) {
+    public static void guardar(JTextArea ta) {
         System.out.println("Estas Guardando");
         String nombreArchivo = "Prueba";/*ta.getText();*///Cambiarlo por el nombre del archivo
         String carpeta = System.getProperty("user.dir");
@@ -97,11 +97,11 @@ public class Instrucciones {
         }
     }
     
-    public static void seleccionarTodo(TextArea ta) {
+    public static void seleccionarTodo(JTextArea ta) {
         ta.selectAll();
     }
     
-    public static void copiar (TextArea ta) {
+    public static void copiar (JTextArea ta) {
         String seleccionado = ta.getSelectedText();
         if(seleccionado != null){
             StringSelection stringSelection = new StringSelection(seleccionado);
@@ -110,7 +110,7 @@ public class Instrucciones {
         }
     }
     
-    public static void pegar(TextArea ta)  {
+    public static void pegar(JTextArea ta)  {
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         if(clipboard != null){
             clipboard.getContents(ta);
@@ -122,5 +122,20 @@ public class Instrucciones {
                 Logger.getLogger(Instrucciones.class.getName()).log(Level.SEVERE, null, ex);
             } 
         } 
+    }
+
+
+    public static void eliminar(JTextArea ta) {
+        ta.replaceSelection("");
+    }
+    
+    public static void cortar(JTextArea ta) {
+        String seleccionado = ta.getSelectedText();
+        if(seleccionado != null){
+            StringSelection stringSelection = new StringSelection(seleccionado);
+            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+            clipboard.setContents(stringSelection, null);
+            ta.replaceSelection("");
+        }
     }
 }
