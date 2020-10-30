@@ -63,7 +63,7 @@ public class Instrucciones {
         }
     }
 
-    public static void salir(){
+
       public static void salir(){
     int resultado;
     resultado = JOptionPane.showConfirmDialog(null,
@@ -72,7 +72,7 @@ public class Instrucciones {
     if (resultado == JOptionPane.YES_OPTION) System.exit(0);
 }
 
-    }
+    
 
     public static void fechaYHora(TextArea ta){
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
