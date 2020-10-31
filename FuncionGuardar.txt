@@ -1,0 +1,29 @@
+public static void Guardar(TextArea ta){
+        System.out.println("Proceso De Guardado");
+        JFileChooser seleccion = new JFileChooser();
+        seleccion.setFileFilter(new FileNameExtensionFilter("Archivo de Texto", "txt"));
+        int opcion = seleccion.showSaveDialog(null);
+            if (opcion == JFileChooser.APPROVE_OPTION) {                                
+                String nombreArchivo = "";
+                //String carpeta = System.getProperty("user.dir");
+                String ruta = seleccion.getSelectedFile().getAbsolutePath()+nombreArchivo +".txt";
+                FileWriter ubicacion = null;      
+                try {
+                    ubicacion = new FileWriter(ruta);
+                } catch (IOException ex) {
+                    Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+                }      
+                BufferedWriter escritor = new BufferedWriter(ubicacion);
+                try {
+                    escritor.write(ta.getText());//RECOJE LO QUE HAY EN EL AREA DE TEXTO
+                } catch (IOException ex) {
+                    Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                try {
+                    escritor.close();
+                } catch (IOException ex) {
+                    Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                System.out.println("Guardado En La Ruta "+ruta);
+            }      
+    }
