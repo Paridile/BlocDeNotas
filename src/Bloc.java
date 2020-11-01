@@ -1,9 +1,7 @@
 import static com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 /**
  *
@@ -32,11 +30,12 @@ public class Bloc implements ActionListener, ItemListener {
   
   private CheckboxMenuItem mi5;
   private TextArea ta;
-  
   private String ruta = null;
+  private String notittle = "Sin titulo";
 
     public Bloc() {
             addWindowListener(new WindowAdapter() {
+        @Override
         public void windowClosing(WindowEvent e) {
             System.exit(0);
         }
@@ -44,7 +43,7 @@ public class Bloc implements ActionListener, ItemListener {
     }
 
   public void go() {
-    f = new Frame("");
+    f = new Frame(notittle+": Bloc de Notas");
     mb = new MenuBar();
     m1 = new Menu("Archivo");
     m2 = new Menu("Edicion");
@@ -108,42 +107,46 @@ public class Bloc implements ActionListener, ItemListener {
 
     f.setSize(500,500);
     f.setVisible(true);
-    f.addWindowListener(new WindowAdapter(){
+    /*f.addWindowListener(new WindowAdapter(){
     public void windowClosing(WindowEvent we){
     System.exit(0);
     }
-    });
+    });*/
   }
 
   public void actionPerformed( ActionEvent ae) {
     System.out.println("Opcion \"" + 
-        ae.getActionCommand() + "\" elegida.");
-    
+    ae.getActionCommand() + "\" elegida.");
     switch(ae.getActionCommand()){
         case "Nuevo":
-            Instrucciones.nuevo(ta);
+            Instrucciones.nuevo(f,ta);
             break;
         case "Abrir":
-            ruta = Instrucciones.abrir(ta);
+            Instrucciones.abrir(f,ta);
             break;
         case "Guardar":
-            ruta = Instrucciones.guardar(ta, ruta);
+            Instrucciones.guardar(f,ta);
             break;
         case "Guardar como...":
-            ruta = Instrucciones.guardarComo(ta);
+            Instrucciones.guardarComo(f,ta);
             break;
         case "Salir":
-            Instrucciones.salir();
+            Instrucciones.salir(f,ta);
             break;
         case "Cortar":
+            Instrucciones.cortar(ta);
             break;
         case "Copiar":
+            Instrucciones.copiar(ta);
             break;
         case "Pegar":
+            Instrucciones.pegar(ta);
             break;
         case "Eliminar":
+            Instrucciones.eliminar(ta);
             break;
         case "Seleccionar todo":
+            Instrucciones.seleccionarTodo(ta);
             break;
         case "Fecha y hora":
             Instrucciones.fechaYHora(ta);
