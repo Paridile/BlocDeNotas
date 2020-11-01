@@ -27,10 +27,8 @@ public class Bloc implements ActionListener, ItemListener {
   private MenuItem m26;
 
   private MenuItem m31;
-  
-  private CheckboxMenuItem mi5;
+ 
   private TextArea ta;
-  private String ruta = null;
 
     public Bloc() {
             addWindowListener(new WindowAdapter() {
@@ -95,10 +93,6 @@ public class Bloc implements ActionListener, ItemListener {
     m2.add(m26);
     
     m3.add(m31);
-
-    mi5 = new CheckboxMenuItem("Persistent");
-    mi5.addItemListener(this);
-    m1.add(mi5);
     
     ta = new TextArea();
     f.add(ta, BorderLayout.CENTER);
