@@ -18,6 +18,8 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+
 
 /*
  * BLOC DE NOTAS
@@ -31,70 +33,46 @@ import javax.swing.JFileChooser;
  */
 
 public class Instrucciones {
+    
+    private static String ruta;
+
+    private static String getRuta() {
+        return ruta;
+    }
+
+    private static void setRuta(String ruta) {
+        Instrucciones.ruta = ruta;
+    }
+    
     public static void nuevo(TextArea ta){
         ta.setText(" ");
+        ta.replaceRange("", 0, 1);
+        
     }
     
-    public static void abrir(Frame fr,TextArea ta){
-        Scanner entrada = null;
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.showOpenDialog(fileChooser);
-        try {
-            String ruta = fileChooser.getSelectedFile().getAbsolutePath();  
-            File f = new File(ruta);
-            String nombre = fileChooser.getName(f);
-            entrada = new Scanner(f);
-            fr.setTitle(nombre + " - Bloc de notas");
-            ta.setText(" ");
-            while (entrada.hasNext()) {
-                ta.append(entrada.nextLine());
-                ta.append("\n");
+    public static void salir(Frame f,TextArea ta){
+        int resultado;
+        if(f.getTitle().equals("Bloc de Notas") && ta.getText().length() > 0) {
+            resultado = JOptionPane.showConfirmDialog(null,
+            "Desea guardar los cambios de este documento?",
+            "Confirmar", JOptionPane.YES_NO_CANCEL_OPTION);
+            if (resultado == JOptionPane.YES_OPTION) {
+                System.exit(0);
+                
             }
-        } catch (FileNotFoundException e) {
-            System.out.println(e.getMessage());
-        } catch (NullPointerException e) {
-            System.out.println("No se ha seleccionado ningún fichero");
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        } finally {
-            if (entrada != null) {
-                entrada.close();
+            if(resultado == JOptionPane.NO_OPTION) {
+                System.exit(0);
             }
         }
-    }
-    
-    public static void salir(){
-        System.exit(0);
+        else {
+            System.exit(0);
+        }
     }
     
     public static void fechaYHora(TextArea ta){
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
         LocalDateTime now = LocalDateTime.now();  
         ta.append(dtf.format(now) + " ");
-    }
-    
-    public static void guardar(TextArea ta) {
-        System.out.println("Estas Guardando");
-        String nombreArchivo = "Prueba";/*ta.getText();*///Cambiarlo por el nombre del archivo
-        String carpeta = System.getProperty("user.dir");
-        String rutaCompleta = carpeta + "/" + nombreArchivo + ".txt";
-        FileWriter ubicacion = null;      
-        try {
-            ubicacion = new FileWriter(rutaCompleta);
-        } catch (IOException ex) {
-            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-        }      
-        BufferedWriter escritor = new BufferedWriter(ubicacion);
-        try {
-            escritor.write(ta.getText());//RECOJE LO QUE HAY EN EL AREA DE TEXTO
-        } catch (IOException ex) {
-            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try {
-            escritor.close();
-        } catch (IOException ex) {
-            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
     
     public static void seleccionarTodo(TextArea ta) {
@@ -122,5 +100,124 @@ public class Instrucciones {
                 Logger.getLogger(Instrucciones.class.getName()).log(Level.SEVERE, null, ex);
             } 
         } 
+    }
+
+
+    public static void eliminar(TextArea ta) {
+       try{
+        ta.replaceRange("", ta.getSelectionStart(), ta.getSelectionEnd());
+       }
+       catch(StringIndexOutOfBoundsException e){}
+    }
+    
+    public static void cortar(TextArea ta) {
+        String seleccionado = ta.getSelectedText();
+        if(seleccionado != null){
+            StringSelection stringSelection = new StringSelection(seleccionado);
+            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+            clipboard.setContents(stringSelection, null);
+            eliminar(ta);
+        }
+    }
+    
+    public static void guardar(Frame fr,TextArea ta) {
+        System.out.println("Guardar Archivo!!");
+        if(getRuta()==null){
+            guardarComo(fr,ta);
+        }
+        else{
+            FileWriter escritor = null;
+            try {
+            escritor = new FileWriter(getRuta());
+        } catch (IOException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }      
+        BufferedWriter buff = new BufferedWriter(escritor);
+        try {
+            buff.write(ta.getText());//RECOJE LO QUE HAY EN EL AREA DE TEXTO
+        } catch (IOException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            buff.close();
+        } catch (IOException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        }
+        
+    }
+    
+    public static void guardarComo(Frame fr,TextArea ta) {
+        System.out.println("Guardando Archivo!!");
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        String rutaAux = getRuta();
+        if (fileChooser.showSaveDialog(fileChooser) == JFileChooser.APPROVE_OPTION) {
+            File archivo = fileChooser.getSelectedFile();
+            setRuta(fileChooser.getSelectedFile().getAbsolutePath());
+                System.out.println("Ruta: " + getRuta());
+            if (getRuta() == null && rutaAux !=null) {
+                setRuta(rutaAux);
+            }
+            FileWriter escritor = null;
+
+            try {
+                escritor = new FileWriter(archivo);
+                escritor.write(ta.getText());
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+            finally {
+                try {
+                    escritor.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }
+        try{
+            File f = new File(getRuta());
+            fr.setTitle(fileChooser.getName(f) + " - Bloc de notas");
+            System.out.println("La ruta es: "+getRuta());
+            System.out.println("El archivo es: "+fileChooser.getName(f));
+        }
+        catch(NullPointerException e){}
+    }
+    
+        public static void abrir(Frame fr,TextArea ta) {
+
+        Scanner entrada = null;
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.showOpenDialog(fileChooser);
+        try {
+            if(fileChooser.getSelectedFile().getAbsolutePath() != null)
+            setRuta(fileChooser.getSelectedFile().getAbsolutePath());
+            File f = new File(getRuta());                                       
+            entrada = new Scanner(f);
+            ta.setText("");
+            while (entrada.hasNext()) {
+                ta.append(entrada.nextLine());
+                ta.append("\n");
+            }
+        } catch (NullPointerException e) {
+            System.out.println("No se ha seleccionado ningún fichero");
+        } catch (FileNotFoundException e) {
+            System.out.println(e.getMessage());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            if (entrada != null) {
+                entrada.close();
+            }
+        }
+        try{
+            File f = new File(getRuta());
+            fr.setTitle(fileChooser.getName(f) + " - Bloc de notas");
+            System.out.println("La ruta es: "+getRuta());
+            System.out.println("El archivo es: "+fileChooser.getName(f));
+        }
+        catch(NullPointerException e){}
     }
 }

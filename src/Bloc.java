@@ -2,6 +2,7 @@ import static com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener;
 import java.awt.*;
 import java.awt.event.*;
 
+
 /**
  *
  * @author Uriel
@@ -29,6 +30,7 @@ public class Bloc implements ActionListener, ItemListener {
   
   private CheckboxMenuItem mi5;
   private TextArea ta;
+  private String ruta = null;
 
     public Bloc() {
             addWindowListener(new WindowAdapter() {
@@ -117,14 +119,16 @@ public class Bloc implements ActionListener, ItemListener {
             Instrucciones.abrir(f,ta);
             break;
         case "Guardar":
-            Instrucciones.guardar(ta);
+            Instrucciones.guardar(f,ta);
             break;
-        case "Guardar como":
+        case "Guardar como...":
+            Instrucciones.guardarComo(f,ta);
             break;
         case "Salir":
-            Instrucciones.salir();
+            Instrucciones.salir(f,ta);
             break;
         case "Cortar":
+            Instrucciones.cortar(ta);
             break;
         case "Copiar":
             Instrucciones.copiar(ta);
@@ -133,6 +137,7 @@ public class Bloc implements ActionListener, ItemListener {
             Instrucciones.pegar(ta);
             break;
         case "Eliminar":
+            Instrucciones.eliminar(ta);
             break;
         case "Seleccionar todo":
             Instrucciones.seleccionarTodo(ta);
