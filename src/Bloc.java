@@ -27,10 +27,8 @@ public class Bloc implements ActionListener, ItemListener {
   private MenuItem m26;
 
   private MenuItem m31;
-  
-  private CheckboxMenuItem mi5;
+ 
   private TextArea ta;
-  private String ruta = null;
 
     public Bloc() {
             addWindowListener(new WindowAdapter() {
@@ -42,7 +40,7 @@ public class Bloc implements ActionListener, ItemListener {
     }
 
   public void go() {
-    f = new Frame("Bloc de Notas");
+    f = new Frame("Sin titulo: Bloc de notas");
     mb = new MenuBar();
     m1 = new Menu("Archivo");
     m2 = new Menu("Edicion");
@@ -95,10 +93,6 @@ public class Bloc implements ActionListener, ItemListener {
     m2.add(m26);
     
     m3.add(m31);
-
-    mi5 = new CheckboxMenuItem("Persistent");
-    mi5.addItemListener(this);
-    m1.add(mi5);
     
     ta = new TextArea();
     f.add(ta, BorderLayout.CENTER);
@@ -106,6 +100,11 @@ public class Bloc implements ActionListener, ItemListener {
 
     f.setSize(500,500);
     f.setVisible(true);
+    f.addWindowListener(new WindowAdapter(){
+    public void windowClosing(WindowEvent we){
+        Instrucciones.salir(f, ta);
+    }
+    });
   }
 
   public void actionPerformed( ActionEvent ae) {
@@ -113,7 +112,7 @@ public class Bloc implements ActionListener, ItemListener {
     ae.getActionCommand() + "\" elegida.");
     switch(ae.getActionCommand()){
         case "Nuevo":
-            Instrucciones.nuevo(ta);
+            Instrucciones.nuevo(f,ta);
             break;
         case "Abrir":
             Instrucciones.abrir(f,ta);
@@ -146,6 +145,7 @@ public class Bloc implements ActionListener, ItemListener {
             Instrucciones.fechaYHora(ta);
             break;
         case "Acerca de":
+            Instrucciones.acercaDe();
             break;
     }
   }

@@ -11,9 +11,14 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,6 +40,7 @@ import javax.swing.JOptionPane;
 public class Instrucciones {
     
     private static String ruta;
+    private static String archivo;
 
     private static String getRuta() {
         return ruta;
@@ -43,22 +49,56 @@ public class Instrucciones {
     private static void setRuta(String ruta) {
         Instrucciones.ruta = ruta;
     }
+
+    public static String getArchivo() {
+        return archivo;
+    }
+
+    public static void setArchivo(String archivo) {
+        Instrucciones.archivo = archivo;
+    }
     
-    public static void nuevo(TextArea ta){
-        ta.setText(" ");
-        ta.replaceRange("", 0, 1);
-        
+    
+    
+    public static void nuevo(Frame f,TextArea ta){
+        if(f.getTitle()=="Sin titulo: Bloc de notas" && ta.getText().length() > 0){
+            confirmaGuardarNuevo(f, ta);
+        }
+        else if(compara(ta.getText())){
+            confirmaGuardarNuevo(f, ta);
+        }
+        else {
+            ta.setText(" ");
+            ta.replaceRange("", 0, 1);
+            f.setTitle("Sin titulo: Bloc de notas");
+            setRuta(null);
+        }
     }
     
     public static void salir(Frame f,TextArea ta){
         int resultado;
-        if(f.getTitle().equals("Bloc de Notas") && ta.getText().length() > 0) {
+        
+        if(f.getTitle()!="Sin titulo: Bloc de notas"){
+            if(compara(ta.getText())) {
+                resultado = JOptionPane.showConfirmDialog(null,
+                "Desea guardar los cambios de este documento?",
+                "Confirmar", JOptionPane.YES_NO_CANCEL_OPTION);
+                if (resultado == JOptionPane.YES_OPTION) {
+                    guardar(f,ta);           
+                }   
+                if(resultado == JOptionPane.NO_OPTION) {
+                    System.exit(0);
+                }
+            }
+        }
+        
+        if(f.getTitle().equals("Sin titulo: Bloc de notas") && ta.getText().length() > 0) {
             resultado = JOptionPane.showConfirmDialog(null,
             "Desea guardar los cambios de este documento?",
             "Confirmar", JOptionPane.YES_NO_CANCEL_OPTION);
             if (resultado == JOptionPane.YES_OPTION) {
+                guardarComo(f,ta);
                 System.exit(0);
-                
             }
             if(resultado == JOptionPane.NO_OPTION) {
                 System.exit(0);
@@ -179,27 +219,34 @@ public class Instrucciones {
         }
         try{
             File f = new File(getRuta());
-            fr.setTitle(fileChooser.getName(f) + " - Bloc de notas");
+            setArchivo(fileChooser.getName(f));
+            fr.setTitle(getArchivo() + " - Bloc de notas");
             System.out.println("La ruta es: "+getRuta());
-            System.out.println("El archivo es: "+fileChooser.getName(f));
+            System.out.println("El archivo es: "+getArchivo());
         }
         catch(NullPointerException e){}
     }
     
         public static void abrir(Frame fr,TextArea ta) {
-
         Scanner entrada = null;
         JFileChooser fileChooser = new JFileChooser();
-        fileChooser.showOpenDialog(fileChooser);
+        String rutaAux = getRuta();
         try {
+            fileChooser.showOpenDialog(fileChooser);
             if(fileChooser.getSelectedFile().getAbsolutePath() != null)
             setRuta(fileChooser.getSelectedFile().getAbsolutePath());
-            File f = new File(getRuta());                                       
-            entrada = new Scanner(f);
-            ta.setText("");
-            while (entrada.hasNext()) {
-                ta.append(entrada.nextLine());
-                ta.append("\n");
+            File f = new File(getRuta());  
+            if (!f.exists()){
+                JOptionPane.showMessageDialog(null, "No se encontro el archivo");
+            }
+            else{
+                compara(ta.getText());
+                entrada = new Scanner(f);
+                ta.setText("");
+                while (entrada.hasNext()) {
+                    ta.append(entrada.nextLine());
+                    ta.append("\n");
+                }
             }
         } catch (NullPointerException e) {
             System.out.println("No se ha seleccionado ningún fichero");
@@ -207,17 +254,76 @@ public class Instrucciones {
             System.out.println(e.getMessage());
         } catch (Exception e) {
             System.out.println(e.getMessage());
-        } finally {
+        }
+        finally {
             if (entrada != null) {
                 entrada.close();
             }
         }
         try{
             File f = new File(getRuta());
-            fr.setTitle(fileChooser.getName(f) + " - Bloc de notas");
-            System.out.println("La ruta es: "+getRuta());
-            System.out.println("El archivo es: "+fileChooser.getName(f));
+            if(f.exists()){
+                setArchivo(fileChooser.getName(f));
+                fr.setTitle(getArchivo() + " - Bloc de notas");
+                System.out.println("La ruta es: "+getRuta());
+                System.out.println("El archivo es: "+getArchivo());
+            }
+            else{
+                setRuta(rutaAux);
+            }
         }
         catch(NullPointerException e){}
+    }
+        
+        
+    public static boolean compara(String text) {
+        boolean flag=false;
+        try {
+            if(getRuta() != null){
+                List<String> fileContent = new ArrayList<>(Files.readAllLines(Paths.get(getRuta()), StandardCharsets.UTF_8));
+                String arc="";
+                for (int i = 0; i < fileContent.size(); i++) {
+                    arc += fileContent.get(i) + "\n";
+               }
+                if(text.equals(arc)) {
+                    flag = false;
+                }
+                else{
+                    flag = true;
+                }
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(Instrucciones.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return flag;
+    }
+    
+    public static void confirmaGuardarNuevo(Frame f,TextArea ta) {
+        int resultado;
+        resultado = JOptionPane.showConfirmDialog(null,
+            "Desea guardar los cambios de este documento?",
+            "Confirmar", JOptionPane.YES_NO_CANCEL_OPTION);
+        if (resultado == JOptionPane.YES_OPTION) {
+            guardar(f,ta);     
+            ta.setText(" ");
+            ta.replaceRange("", 0, 1);
+            f.setTitle("Sin titulo: Bloc de notas");
+            setRuta(null);
+        }   
+        if(resultado == JOptionPane.NO_OPTION) {
+            ta.setText(" ");
+            ta.replaceRange("", 0, 1);
+            f.setTitle("Sin titulo: Bloc de notas");
+            setRuta(null);
+        }
+    }
+    
+    public static void acercaDe() {
+        JOptionPane.showMessageDialog(null, "Este programa fue hecho para la clase de Programación visual del\n"
+                + "grupo ICO G-92 de UAEMex por\n\n"
+                + "     - Ríos Díaz de León José Pablo\n"
+                + "     - Jimenez Zempoalteca Uriel\n"
+                + "     - Sanchez Cortes Aaron Israel\n"
+                + "     - Paez Villafuerte Eithel Agustin\n\n");
     }
 }
