@@ -112,7 +112,7 @@ public class Instrucciones {
     public static void fechaYHora(TextArea ta){
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
         LocalDateTime now = LocalDateTime.now();  
-        ta.append(dtf.format(now) + " ");
+        ta.insert(dtf.format(now), ta.getCaretPosition());
     }
     
     public static void seleccionarTodo(TextArea ta) {
@@ -135,7 +135,7 @@ public class Instrucciones {
             String textopegado;
             try {
                 textopegado = (String) clipboard.getData(DataFlavor.stringFlavor);
-                ta.append(textopegado);
+                ta.insert(textopegado, ta.getCaretPosition());
             } catch (UnsupportedFlavorException | IOException ex) {
                 Logger.getLogger(Instrucciones.class.getName()).log(Level.SEVERE, null, ex);
             } 
