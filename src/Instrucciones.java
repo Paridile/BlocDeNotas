@@ -36,11 +36,11 @@ public class Instrucciones {
     
     private static String ruta;
 
-    public static String getRuta() {
+    private static String getRuta() {
         return ruta;
     }
 
-    public static void setRuta(String ruta) {
+    private static void setRuta(String ruta) {
         Instrucciones.ruta = ruta;
     }
     
@@ -122,7 +122,6 @@ public class Instrucciones {
     
     public static void guardar(Frame fr,TextArea ta) {
         System.out.println("Guardar Archivo!!");
-        String rut=null;
         if(getRuta()==null){
             guardarComo(fr,ta);
         }
@@ -145,7 +144,7 @@ public class Instrucciones {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
         }
-        setRuta(rut);
+        
     }
     
     public static void guardarComo(Frame fr,TextArea ta) {
