@@ -60,16 +60,25 @@ public class Instrucciones {
     
     
     
-    public static void nuevo(TextArea ta){
-        ta.setText(" ");
-        ta.replaceRange("", 0, 1);
-        
+    public static void nuevo(Frame f,TextArea ta){
+        if(f.getTitle()=="Sin titulo: Bloc de notas" && ta.getText().length() > 0){
+            confirmaGuardarNuevo(f, ta);
+        }
+        else if(compara(ta.getText())){
+            confirmaGuardarNuevo(f, ta);
+        }
+        else {
+            ta.setText(" ");
+            ta.replaceRange("", 0, 1);
+            f.setTitle("Sin titulo: Bloc de notas");
+            setRuta(null);
+        }
     }
     
     public static void salir(Frame f,TextArea ta){
         int resultado;
         
-        if(f.getTitle()!="Bloc de Notas"){
+        if(f.getTitle()!="Sin titulo: Bloc de notas"){
             if(compara(ta.getText())) {
                 resultado = JOptionPane.showConfirmDialog(null,
                 "Desea guardar los cambios de este documento?",
@@ -83,7 +92,7 @@ public class Instrucciones {
             }
         }
         
-        if(f.getTitle().equals("Bloc de Notas") && ta.getText().length() > 0) {
+        if(f.getTitle().equals("Sin titulo: Bloc de notas") && ta.getText().length() > 0) {
             resultado = JOptionPane.showConfirmDialog(null,
             "Desea guardar los cambios de este documento?",
             "Confirmar", JOptionPane.YES_NO_CANCEL_OPTION);
@@ -287,5 +296,25 @@ public class Instrucciones {
             Logger.getLogger(Instrucciones.class.getName()).log(Level.SEVERE, null, ex);
         }
         return flag;
+    }
+    
+    public static void confirmaGuardarNuevo(Frame f,TextArea ta) {
+        int resultado;
+        resultado = JOptionPane.showConfirmDialog(null,
+            "Desea guardar los cambios de este documento?",
+            "Confirmar", JOptionPane.YES_NO_CANCEL_OPTION);
+        if (resultado == JOptionPane.YES_OPTION) {
+            guardar(f,ta);     
+            ta.setText(" ");
+            ta.replaceRange("", 0, 1);
+            f.setTitle("Sin titulo: Bloc de notas");
+            setRuta(null);
+        }   
+        if(resultado == JOptionPane.NO_OPTION) {
+            ta.setText(" ");
+            ta.replaceRange("", 0, 1);
+            f.setTitle("Sin titulo: Bloc de notas");
+            setRuta(null);
+        }
     }
 }

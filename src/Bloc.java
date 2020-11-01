@@ -40,7 +40,7 @@ public class Bloc implements ActionListener, ItemListener {
     }
 
   public void go() {
-    f = new Frame("Bloc de Notas");
+    f = new Frame("Sin titulo: Bloc de notas");
     mb = new MenuBar();
     m1 = new Menu("Archivo");
     m2 = new Menu("Edicion");
@@ -100,6 +100,11 @@ public class Bloc implements ActionListener, ItemListener {
 
     f.setSize(500,500);
     f.setVisible(true);
+    f.addWindowListener(new WindowAdapter(){
+    public void windowClosing(WindowEvent we){
+        Instrucciones.salir(f, ta);
+    }
+    });
   }
 
   public void actionPerformed( ActionEvent ae) {
@@ -107,7 +112,7 @@ public class Bloc implements ActionListener, ItemListener {
     ae.getActionCommand() + "\" elegida.");
     switch(ae.getActionCommand()){
         case "Nuevo":
-            Instrucciones.nuevo(ta);
+            Instrucciones.nuevo(f,ta);
             break;
         case "Abrir":
             Instrucciones.abrir(f,ta);
