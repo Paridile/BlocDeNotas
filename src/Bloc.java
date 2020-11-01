@@ -1,6 +1,9 @@
 import static com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -29,6 +32,8 @@ public class Bloc implements ActionListener, ItemListener {
   
   private CheckboxMenuItem mi5;
   private TextArea ta;
+  
+  private String ruta = null;
 
     public Bloc() {
             addWindowListener(new WindowAdapter() {
@@ -39,7 +44,7 @@ public class Bloc implements ActionListener, ItemListener {
     }
 
   public void go() {
-    f = new Frame("Bloc de Notas z.1");
+    f = new Frame("");
     mb = new MenuBar();
     m1 = new Menu("Archivo");
     m2 = new Menu("Edicion");
@@ -119,12 +124,13 @@ public class Bloc implements ActionListener, ItemListener {
             Instrucciones.nuevo(ta);
             break;
         case "Abrir":
-            Instrucciones.abrir(ta);
+            ruta = Instrucciones.abrir(ta);
             break;
         case "Guardar":
+            ruta = Instrucciones.guardar(ta, ruta);
             break;
-        case "Guardad como":
-            Instrucciones.guardarComo(ta);
+        case "Guardar como...":
+            ruta = Instrucciones.guardarComo(ta);
             break;
         case "Salir":
             Instrucciones.salir();

@@ -1,13 +1,17 @@
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.*;
 
@@ -27,21 +31,22 @@ import javax.swing.*;
  * @author Uriel
  */
 
-public class Instrucciones {
+public class Instrucciones extends JFrame{
     public static void nuevo(TextArea ta){
         ta.setText(" ");
     }
     
-    public static void abrir(TextArea ta){
+    public static String abrir(TextArea ta){
         String archivo="";
         Scanner entrada = null;
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.showOpenDialog(fileChooser);
+        String ruta = fileChooser.getSelectedFile().getAbsolutePath();
         try {
-            String ruta = fileChooser.getSelectedFile().getAbsolutePath();                                        
+            //String ruta = fileChooser.getSelectedFile().getAbsolutePath();                                        
             File f = new File(ruta);
             entrada = new Scanner(f);
-            ta.setText(" ");
+            ta.setText("");
             while (entrada.hasNext()) {
                 ta.append(entrada.nextLine());
                 ta.append("\n");
@@ -57,33 +62,68 @@ public class Instrucciones {
                 entrada.close();
             }
         }
+        System.out.println("La ruta es: "+ruta);
+        System.out.println("El archivo es: "+fileChooser);
+        return ruta;
     }
     
-    //fileChooser.showSaveDialog(fileChooser);
+    public static String guardar(TextArea ta, String ruta) {
+        System.out.println("Guardar Archivo!!");
+        String rut=null;
+        if(ruta==null){
+            rut = guardarComo(ta);
+        }
+        else{
+            FileWriter escritor = null;
+            try {
+            escritor = new FileWriter(ruta);
+        } catch (IOException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }      
+        BufferedWriter buff = new BufferedWriter(escritor);
+        try {
+            buff.write(ta.getText());//RECOJE LO QUE HAY EN EL AREA DE TEXTO
+        } catch (IOException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            buff.close();
+        } catch (IOException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        }
+        return rut;
+    }
     
-    public static void guardarComo(TextArea ta) {
-       String nombre="";
-       JFileChooser fileChooser = new JFileChooser();
-       fileChooser.showSaveDialog(fileChooser);
-       nombre = fileChooser.getSelectedFile().getAbsolutePath();
-       File guardado = new File(nombre);
-       FileWriter escritor = null;
-       try{
-           escritor = new FileWriter(guardado);
-           escritor.write(ta.getText());
-       }
-       catch(FileNotFoundException e){
-           System.out.println(e.getMessage());
-       }
-       catch(NullPointerException e){
-            System.out.println("No se ha seleccionado ningún fichero");
-       }
-       catch(Exception e){
-           System.out.println(e.getMessage());
-       }
-       finally{
-           
-       }
+    public static String guardarComo(TextArea ta) {
+        System.out.println("Guardando Archivo!!");
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        String ruta = null;
+        
+        if (fileChooser.showSaveDialog(fileChooser) == JFileChooser.APPROVE_OPTION) {
+            File archivo = fileChooser.getSelectedFile();
+            ruta = fileChooser.getSelectedFile().getAbsolutePath();
+            FileWriter escritor = null;
+
+            try {
+                escritor = new FileWriter(archivo);
+                escritor.write(ta.getText());
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+            finally {
+                try {
+                    escritor.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }
+        System.out.println("La ruta es:"+ruta);
+        return ruta;
     }
     
     public static void salir(){
