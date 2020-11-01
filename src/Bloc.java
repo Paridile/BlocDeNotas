@@ -1,7 +1,7 @@
 import static com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener;
 import java.awt.*;
 import java.awt.event.*;
-import javax.swing.JTextArea;
+
 
 /**
  *
@@ -29,7 +29,8 @@ public class Bloc implements ActionListener, ItemListener {
   private MenuItem m31;
   
   private CheckboxMenuItem mi5;
-  private JTextArea ta;
+  private TextArea ta;
+  private String ruta = null;
 
     public Bloc() {
             addWindowListener(new WindowAdapter() {
@@ -99,7 +100,7 @@ public class Bloc implements ActionListener, ItemListener {
     mi5.addItemListener(this);
     m1.add(mi5);
     
-    ta = new JTextArea();
+    ta = new TextArea();
     f.add(ta, BorderLayout.CENTER);
     f.pack();
 
@@ -115,15 +116,16 @@ public class Bloc implements ActionListener, ItemListener {
             Instrucciones.nuevo(ta);
             break;
         case "Abrir":
-            Instrucciones.abrir(f,ta);
+            ruta = Instrucciones.abrir(f,ta,ruta);
             break;
         case "Guardar":
-            Instrucciones.guardar(ta);
+            ruta = Instrucciones.guardar(f,ta,ruta);
             break;
-        case "Guardar como":
+        case "Guardar como...":
+            ruta = Instrucciones.guardarComo(f,ta,ruta);
             break;
         case "Salir":
-            Instrucciones.salir();
+            Instrucciones.salir(f,ta);
             break;
         case "Cortar":
             Instrucciones.cortar(ta);
