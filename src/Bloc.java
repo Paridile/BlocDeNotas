@@ -116,13 +116,13 @@ public class Bloc implements ActionListener, ItemListener {
             Instrucciones.nuevo(ta);
             break;
         case "Abrir":
-            ruta = Instrucciones.abrir(f,ta,ruta);
+            Instrucciones.abrir(f,ta);
             break;
         case "Guardar":
-            ruta = Instrucciones.guardar(f,ta,ruta);
+            Instrucciones.guardar(f,ta);
             break;
         case "Guardar como...":
-            ruta = Instrucciones.guardarComo(f,ta,ruta);
+            Instrucciones.guardarComo(f,ta);
             break;
         case "Salir":
             Instrucciones.salir(f,ta);

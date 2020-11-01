@@ -120,16 +120,16 @@ public class Instrucciones {
         }
     }
     
-    public static String guardar(Frame fr,TextArea ta, String ruta) {
+    public static void guardar(Frame fr,TextArea ta) {
         System.out.println("Guardar Archivo!!");
         String rut=null;
-        if(ruta==null){
-            rut = guardarComo(fr,ta,ruta);
+        if(getRuta()==null){
+            guardarComo(fr,ta);
         }
         else{
             FileWriter escritor = null;
             try {
-            escritor = new FileWriter(ruta);
+            escritor = new FileWriter(getRuta());
         } catch (IOException ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }      
@@ -145,20 +145,20 @@ public class Instrucciones {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
         }
-        return rut;
+        setRuta(rut);
     }
     
-    public static String guardarComo(Frame fr,TextArea ta, String ruta) {
+    public static void guardarComo(Frame fr,TextArea ta) {
         System.out.println("Guardando Archivo!!");
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        String rutaAux = ruta;
+        String rutaAux = getRuta();
         if (fileChooser.showSaveDialog(fileChooser) == JFileChooser.APPROVE_OPTION) {
             File archivo = fileChooser.getSelectedFile();
-            ruta = fileChooser.getSelectedFile().getAbsolutePath();
-                System.out.println("Ruta: " + ruta);
-            if (ruta == null && rutaAux !=null) {
-                ruta = rutaAux;
+            setRuta(fileChooser.getSelectedFile().getAbsolutePath());
+                System.out.println("Ruta: " + getRuta());
+            if (getRuta() == null && rutaAux !=null) {
+                setRuta(rutaAux);
             }
             FileWriter escritor = null;
 
@@ -179,25 +179,23 @@ public class Instrucciones {
 
         }
         try{
-            File f = new File(ruta);
+            File f = new File(getRuta());
             fr.setTitle(fileChooser.getName(f) + " - Bloc de notas");
-            System.out.println("La ruta es: "+ruta);
+            System.out.println("La ruta es: "+getRuta());
             System.out.println("El archivo es: "+fileChooser.getName(f));
         }
         catch(NullPointerException e){}
-        return ruta;
     }
     
-        public static String abrir(Frame fr,TextArea ta,String ruta) {
+        public static void abrir(Frame fr,TextArea ta) {
 
         Scanner entrada = null;
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.showOpenDialog(fileChooser);
         try {
             if(fileChooser.getSelectedFile().getAbsolutePath() != null)
-            ruta = fileChooser.getSelectedFile().getAbsolutePath();
-            File f = new File(ruta);
-            //String ruta = fileChooser.getSelectedFile().getAbsolutePath();                                        
+            setRuta(fileChooser.getSelectedFile().getAbsolutePath());
+            File f = new File(getRuta());                                       
             entrada = new Scanner(f);
             ta.setText("");
             while (entrada.hasNext()) {
@@ -216,12 +214,11 @@ public class Instrucciones {
             }
         }
         try{
-            File f = new File(ruta);
+            File f = new File(getRuta());
             fr.setTitle(fileChooser.getName(f) + " - Bloc de notas");
-            System.out.println("La ruta es: "+ruta);
+            System.out.println("La ruta es: "+getRuta());
             System.out.println("El archivo es: "+fileChooser.getName(f));
         }
         catch(NullPointerException e){}
-        return ruta;
     }
 }
