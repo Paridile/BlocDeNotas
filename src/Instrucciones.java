@@ -317,4 +317,13 @@ public class Instrucciones {
             setRuta(null);
         }
     }
+    
+    public static void acercaDe() {
+        JOptionPane.showMessageDialog(null, "Este programa fue hecho para la clase de Programación visual del\n"
+                + "grupo ICO G-92 de UAEMex por\n\n"
+                + "     - Ríos Díaz de León José Pablo\n"
+                + "     - Jimenez Zempoalteca Uriel\n"
+                + "     - Sanchez Cortes Aaron Israel\n"
+                + "     - Paez Villafuerte Eithel Agustin\n\n");
+    }
 }

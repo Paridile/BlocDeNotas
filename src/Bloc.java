@@ -145,6 +145,7 @@ public class Bloc implements ActionListener, ItemListener {
             Instrucciones.fechaYHora(ta);
             break;
         case "Acerca de":
+            Instrucciones.acercaDe();
             break;
     }
   }
