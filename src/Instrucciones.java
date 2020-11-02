@@ -234,8 +234,9 @@ public class Instrucciones {
         Scanner entrada = null;
         JFileChooser fileChooser = new JFileChooser();
         String rutaAux = getRuta();
+        int resultado=0;
         try {
-            int resultado;
+
                     if(getRuta() == null && ta.getText().length() > 0){
                         resultado = JOptionPane.showConfirmDialog(null,
                         "Desea guardar los cambios de este documento?",
@@ -253,6 +254,7 @@ public class Instrucciones {
                         guardar(fr,ta);           
                     }   
                 }
+                    if (resultado!= JOptionPane.CANCEL_OPTION && resultado != JOptionPane.CLOSED_OPTION){
 
             if (fileChooser.showOpenDialog(fileChooser) == JFileChooser.APPROVE_OPTION) {
             if(fileChooser.getSelectedFile().getAbsolutePath() != null)
@@ -269,7 +271,7 @@ public class Instrucciones {
                     ta.append("\n");
                 }
             }
-        }
+        }}
         } catch (NullPointerException e) {
             System.out.println("No se ha seleccionado ningún fichero");
         } catch (FileNotFoundException e) {
