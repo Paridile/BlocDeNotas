@@ -90,9 +90,12 @@ public class Instrucciones {
                     System.exit(0);
                 }
             }
+            else {
+                System.exit(0);
+            }
         }
         
-        if(f.getTitle().equals("Sin titulo: Bloc de notas") && ta.getText().length() > 0) {
+        else if(f.getTitle().equals("Sin titulo: Bloc de notas") && ta.getText().length() > 0) {
             resultado = JOptionPane.showConfirmDialog(null,
             "Desea guardar los cambios de este documento?",
             "Confirmar", JOptionPane.YES_NO_CANCEL_OPTION);
@@ -233,7 +236,7 @@ public class Instrucciones {
         String rutaAux = getRuta();
         try {
             int resultado;
-                    if(fr.getTitle()=="Sin titulo: Bloc de notas" && ta.getText().length() > 0){
+                    if(getRuta() == null && ta.getText().length() > 0){
                         resultado = JOptionPane.showConfirmDialog(null,
                         "Desea guardar los cambios de este documento?",
                         "Confirmar", JOptionPane.YES_NO_CANCEL_OPTION);
@@ -250,7 +253,8 @@ public class Instrucciones {
                         guardar(fr,ta);           
                     }   
                 }
-            fileChooser.showOpenDialog(fileChooser);
+
+            if (fileChooser.showOpenDialog(fileChooser) == JFileChooser.APPROVE_OPTION) {
             if(fileChooser.getSelectedFile().getAbsolutePath() != null)
             setRuta(fileChooser.getSelectedFile().getAbsolutePath());
             File f = new File(getRuta());  
@@ -265,6 +269,7 @@ public class Instrucciones {
                     ta.append("\n");
                 }
             }
+        }
         } catch (NullPointerException e) {
             System.out.println("No se ha seleccionado ningún fichero");
         } catch (FileNotFoundException e) {
