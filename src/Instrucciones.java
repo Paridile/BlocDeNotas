@@ -112,7 +112,7 @@ public class Instrucciones {
     public static void fechaYHora(TextArea ta){
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
         LocalDateTime now = LocalDateTime.now();  
-        ta.insert(dtf.format(now), ta.getCaretPosition());
+        ta.insert(dtf.format(now), ta.getCaretPosition());  
     }
     
     public static void seleccionarTodo(TextArea ta) {
@@ -232,6 +232,24 @@ public class Instrucciones {
         JFileChooser fileChooser = new JFileChooser();
         String rutaAux = getRuta();
         try {
+            int resultado;
+                    if(fr.getTitle()=="Sin titulo: Bloc de notas" && ta.getText().length() > 0){
+                        resultado = JOptionPane.showConfirmDialog(null,
+                        "Desea guardar los cambios de este documento?",
+                        "Confirmar", JOptionPane.YES_NO_CANCEL_OPTION);
+                        if (resultado == JOptionPane.YES_OPTION) {
+                            guardar(fr,ta);           
+                        } 
+                    }
+                
+                    if(compara(ta.getText())) {
+                    resultado = JOptionPane.showConfirmDialog(null,
+                    "Desea guardar los cambios de este documento?",
+                    "Confirmar", JOptionPane.YES_NO_CANCEL_OPTION);
+                    if (resultado == JOptionPane.YES_OPTION) {
+                        guardar(fr,ta);           
+                    }   
+                }
             fileChooser.showOpenDialog(fileChooser);
             if(fileChooser.getSelectedFile().getAbsolutePath() != null)
             setRuta(fileChooser.getSelectedFile().getAbsolutePath());
@@ -240,7 +258,6 @@ public class Instrucciones {
                 JOptionPane.showMessageDialog(null, "No se encontro el archivo");
             }
             else{
-                compara(ta.getText());
                 entrada = new Scanner(f);
                 ta.setText("");
                 while (entrada.hasNext()) {
