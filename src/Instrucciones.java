@@ -242,7 +242,7 @@ public class Instrucciones {
                         } 
                     }
                 
-                    if(compara(ta.getText())) {
+                    else if(compara(ta.getText())) {
                     resultado = JOptionPane.showConfirmDialog(null,
                     "Desea guardar los cambios de este documento?",
                     "Confirmar", JOptionPane.YES_NO_CANCEL_OPTION);
