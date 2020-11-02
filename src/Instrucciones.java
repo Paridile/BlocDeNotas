@@ -90,9 +90,12 @@ public class Instrucciones {
                     System.exit(0);
                 }
             }
+            else {
+                System.exit(0);
+            }
         }
         
-        if(f.getTitle().equals("Sin titulo: Bloc de notas") && ta.getText().length() > 0) {
+        else if(f.getTitle().equals("Sin titulo: Bloc de notas") && ta.getText().length() > 0) {
             resultado = JOptionPane.showConfirmDialog(null,
             "Desea guardar los cambios de este documento?",
             "Confirmar", JOptionPane.YES_NO_CANCEL_OPTION);
